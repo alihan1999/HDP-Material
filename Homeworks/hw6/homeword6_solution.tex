@@ -1,0 +1,206 @@
+\documentclass[12pt]{article}
+\usepackage[english]{babel}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\title{HDP Notes and Exercise Soultions}
+\author{Holden Caulfield}
+\newtheorem{theorem}{Theorem}
+\newtheorem{remark}{Remark}[theorem]
+\newtheorem{ex}{Problem}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{tcolorbox}
+\usepackage{caption}
+\usepackage{xcolor}
+\usepackage{tikz}
+\tcbuselibrary{skins}
+\tcbuselibrary{breakable}
+
+\newtcolorbox{bx}[1]{skin=bicolor,breakable,leftrule=1mm,toprule=0mm,bottomrule=0mm,rightrule=0mm,colbacklower=red!15,colback=gray!15,sharp corners,colframe=red}
+
+\begin{document}
+\centering	\section*{Homework 6 Solution}
+
+\begin{bx}
+	
+	\begin{ex}
+	Prove the following:
+	\begin{enumerate}[label=(\alph*)]
+		\item Let $X=(X_1,\dots,X_n)$ and $Y=(Y_1,\dots,Y_n)$ be independent symmetric Bernoulli random vectors in $\mathbb{R}^n$, i.e. all coordinates $X_i$ and $Y_i$ areindependent random
+		variables that take values ±1 with probability 1/2. Show that:
+		\[
+		\mathbb{P}\{\left | \langle X,Y\rangle \right | \ge 0.001n\} \le 2exp(-cn)
+		\]
+	\item Deduce that the angle $\angle(X,Y)$ between the vectors X and Y satisfies
+		\[
+	\mathbb{P}\{\left | \angle (X,Y) - \frac{\pi}{2} \right | \ge 0.01\pi\} \le 2exp(-c_1n)
+	\]
+	\item Prove that for every dimension $n > C$, there exist $N\ge \frac{1}{2} exp(cn)$ vectors $v_1,\dots,v_N$
+	in $\mathbb{R}^n$ so that all pairwise angles between these vectors are between $89^\circ$ and $91^\circ$.
+		\end{enumerate}
+	\end{ex}
+	\tcblower
+\begin{enumerate}[label=(\alph*)]
+	\item for every $i$, $X_iY_i$ is a symmetric Bernoulli random variable, and the inner product can be written as a sum of independent symmetric Bernoulli random variables.Applying Hoeffding's inequality:
+	$$	\mathbb{P}\{\left |\sum_{i=1}^{n}X_iY_i \right | \ge 0.001n\} \le 2exp(-5.10^{-7}n)$$.
+	\item Denoting the angle with $\theta$, $\cos\theta
+	 =\frac{\langle X,Y \rangle}{n}$.
+	 Further
+	 \begin{align*}
+	 	\mathbb{P}\{\left | \theta - \frac{\pi}{2} \right | \ge 0.01\pi\}&=\mathbb{P}\{\left |\cos\theta\right | \ge \sin(0.01\pi)\} \\
+	 	&= \mathbb{P}\{\left |\langle X,Y\rangle \right | \ge n\sin(0.01\pi)\} \\
+	 	&\le 2exp(-c_1n) \; \; (Hoeffding's)
+	 \end{align*}
+ \item Denoting the angle between every pair of vectors as $\theta_{ij}$.
+ \[
+ \mathbb{P}\{\left | \theta_{ij} - \frac{\pi}{2} \right |\ge \frac{\pi}{180}\} \le 2exp(c^{\prime}n)
+ \]
+ Thus the probability of existing a pair with an angle not lying in the given interval is bounded above by $2exp(-c^{\prime}n)N^2$ using union bound.
+ We want at least $\frac{exp(cn)}{2}$ such vectors.
+ Setting an upper bound of $0.01$, we want
+ \[
+ exp(n(2c-c^{\prime})) \le 2.10^{-2}
+ \]
+ picking $c < \frac{c^\prime}{2}$, the inequality holds for $n>C$ for some $C$ since the exponential function is not bounded.
+\end{enumerate}
+\qed
+\end{bx}
+
+\begin{bx}
+	
+	\begin{ex}
+		Prove the following:
+		\begin{enumerate}[label=(\alph*)]
+			\item Let $z$ be a fixed unit vector in $\mathbb{R}^d$. Show that the $ X = Gz$ is a random vector in $\mathbb{R}^n$ whose all coordinates $X_j$ are independent random variables, which satisfy
+			\[
+			\mathbb{E}X_j=0 ,\;\;\; Var(X_j)=1 , \;\;\; \|X_j\|_{\psi_2} \le C_1
+			\]
+			\item  Prove a thin-shell inequality for $X = Gz$:
+			\[
+			\mathbb{P}\{0.99\sqrt{n} \le \|X\|_2 \le 1.01 \sqrt{n}\} \ge 1-2exp(-cn)
+			\]
+			\item Let $x_1,\dots,x_N$ be any set of fixed vectors in $\mathbb{R}^d$.
+			Let $G$ be an $n \times d$ Bernoulli random matrix, and set $T = \frac{G}{\sqrt{n}}$. Prove that if $n=ClogN$, then the map $T$ approximately preserves the pairwise geometry of the data, namely that following event holds with positive probability:
+			\[
+			0.99\|x_i-x_j\|_2 \le \|Tx_i-Tx_j\|_2 \le 1.01\|x_i-x_j\|_2 \;\; \; \text{for all } i,j \in [N]
+			\]
+		\end{enumerate}
+	\end{ex}
+	\tcblower
+	\begin{enumerate}[label=(\alph*)]
+	\item Denoting the ith row of $G$ with $G_i$
+	\[
+	\mathbb{E}X_j = \mathbb{E}G_jz = \sum_{i=1}^{n}\mathbb{E}G_{ji}z_i = 0
+	\]
+	\[
+	Var(X_j) = \mathbb{E}X_j^2 = \sum_{k,i=1}^{n}\mathbb{E}[G_{ji}G_{jk}]z_iz_k = \sum_{i=1}^{n}z_i^2=1 \; \; (unit)
+	\]
+		For the third one, we know that $X_j$ is a sum of independent symmetric Bernoulli random variables with coefficients $z_i$, thus we can apply Hoeffding's inequality, which yields
+	\[
+	\mathbb{P}\{\left | G_jz\right | \ge t\} \le 2exp(\frac{-t^2}{2\|z\|_2^2}) = 2exp(\frac{-t^2}{2})
+	\]
+	which implies that $\|X_j\|_{\psi_2} \le \sqrt{2}$
+	\item 
+	\[
+	\mathbb{E}\|X\|_2^2=\sum_{i=1}^{n}\mathbb{E}X_j^2=n
+	\]
+	\[
+		\mathbb{P}\{\left| \|X\|_2^2 - n\right | \ge 0.01n \} =\mathbb{P} \left \{ \left |\sum_{i=1}^{n}(X_i^2-1)\right | \ge 0.01n \right \}
+	\]
+	As shown before, each $X_i$ is subgaussian, which makes $X_i^2-1$ sub-exponential for each $i$.
+	
+	Applying Bernstein's inequality
+	\begin{align}\label{eq:1}
+	\mathbb{P}\left \{ \left | \sum_{i=1}^{n}(X_i^2-1)\right | \ge 0.01n \right\} \le 2exp(-c \min(\frac{10^{-4}n^2}{\sigma^2},\frac{0.01n}{k}))
+	\end{align}
+	Where $$\sigma^2 = \sum_{i=1}^{n}\|X_i-1\|_{\psi_1}^2 \le nC$$ $$k=\max_{i\in[n]}\|X_i-1\|_{\psi_1}^2\le C$$ since all variables are sub-exponential.
+	Substituting in (\ref{eq:1}), we have
+	\[
+	\mathbb{P}\{\left| \|X\|_2^2 - n\right | \le 0.01n \} \ge 1-2exp(-c^\prime n)
+	\]
+which implies that 
+\[
+0.99\sqrt{n}\le \|X\|_2 \le 1.01 \sqrt{n}
+\]
+with probability at least $1-2exp(-c^\prime n)$
+
+\item Fix a pair $x_i$ and $x_j$. Normalizing $\frac{x_i-x_j}{\|x_i-x_j\|}$, we can apply the thin-shell we found in previous section, yielding
+\begin{align*}
+\mathbb{P}\left \{0.99\sqrt{n} \le \frac{\|Gx_i-Gx_j\|_2}{\|x_i-x_j\|_2} \le 1.01\sqrt{n} \right \} &=\\
+\mathbb{P}\left \{0.99 \|x_i-x_j\|_2 \le \|{Tx_i-Tx_j}\|_2 \le 1.01 \|x_i-x_j\|_2 \right \} &\ge\\ 1-2exp(-cn)
+\end{align*}
+Applying union bound on all pairs, the probability of existing a pair not lying in the interval is bounded above by $2exp(2\log N-cn)$. Setting $n\ge \frac{4\log N}{c}$ would give us a high confidence.
+	\end{enumerate}
+	\qed
+\end{bx}
+
+\begin{bx}
+	
+	\begin{ex}\;
+		\begin{enumerate}[label=(\alph*)]
+			\item Check that the Gram matrix G of any system of vectors is positive semidefinite.
+			\item Conversely, prove that any $n\times n$ positive semidefinite matrix $G$ is a Gram matrix
+			of some system of vectors $v_1,\dots,v_n$ in $\mathbb{R}^n$ .
+		\end{enumerate}
+	\end{ex}
+\tcblower
+\begin{enumerate}[label=(\alph*)]
+\item \label{it:a} Assume we have a set of vectors $v_1,\dots,v_n$ whose gram matrix is $G$.
+\[
+V = 
+\begin{bmatrix}
+v_1 \\
+\vdots \\
+v_n
+\end{bmatrix}
+\]
+\[
+G = 
+\begin{bmatrix}
+	\langle v_1,v_1\rangle & \dots & \langle v_1,v_n\rangle \\
+	\vdots & \ddots&\vdots \\
+	\langle v_n,v_1\rangle & \dots & \langle v_n,v_n\rangle
+\end{bmatrix}
+= VV^{\top}
+\]
+let $x$ be a non-zero vector. 
+\[
+x^{\top}Gx=x^{\top}VV^{\top}x = (V^{\top}x)^{\top}V^{\top}x = \langle V^{\top}x,V^{\top}x \rangle = \|V^{\top}x\|^2\ge 0
+\]
+where $\|.\|$ denotes the norm induced by the inner product.
+\item According to the real spectral theorem, we can pick an orthonormal basis $v_1,\dots,v_n$ of $\mathbb{R}^n$ and write 
+\[
+G = V\Sigma V^{\top}
+\]
+where V is the column vector $V = [v_1,\dots,v_n]$ and $\Sigma$ is the diagonal matrix of eigenvalues.
+expanding the relation, we get $G=\sum_{i=1}^{n}\lambda_iv_iv_i^{\top}$.
+Setting $A=\sum_{i=1}^{n}\sqrt{\lambda_i}v_iv_i^{\top}$,
+\[
+A^2 = \sum_{i,j=1}^{n}\sqrt{\lambda_i\lambda_j}v_i\langle v_i,v_j \rangle v_j^{\top} = \sum_{i=1}^{n}\lambda_iv_iv_i^{\top} = G
+\]
+Note that the square root is real-valued since all eigenvalues are non-negative.
+Further, it's easy to check that $A^2=AA^{\top}$, which is the gram matrix of the rows of $A$ as shown in part \ref{it:a}. So $G$ is the gram matrix of the rows of $A$.
+\end{enumerate}
+\qed
+\end{bx}
+
+\begin{bx}
+	
+	\begin{ex}
+		Let $\theta$ be a random vector uniformly distributed on the unit circle $S^1 = \{x \in \mathbb{R}^2 :
+			x_1^2 + x_2^2 = 1\}$. Prove that for any pair of vectors $u,v \in S^1$ , we have
+			\[
+			\mathbb{E}\mathrm{sign}(\langle u,\theta\rangle)\mathrm{sign}(\langle v,\theta\rangle) = \frac{2}{\pi}\mathrm{arcsin}(\langle u,v\rangle)
+			\]
+	\end{ex}
+	\tcblower
+	Setting $\angle(u,v)=\alpha$, we have $\alpha =\cos^{-1}(\langle u,v\rangle)$
+	\begin{align*} 
+		\mathbb{E}\mathrm{sign}(\langle u,\theta\rangle)\mathrm{sign}(\langle v,\theta\rangle) &= 1-\frac{2\alpha}{\pi} \\
+		&= \frac{2}{\pi}\sin^{-1}(\langle u,v \rangle)
+	\end{align*}
+	\qed
+\end{bx}
+\end{document}
