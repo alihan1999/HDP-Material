@@ -1,0 +1,137 @@
+\documentclass[12pt]{article}
+\usepackage[english]{babel}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\title{HDP Notes and Exercise Soultions}
+\author{Holden Caulfield}
+\newtheorem{theorem}{Theorem}
+\newtheorem{remark}{Remark}[theorem]
+\newtheorem{ex}{Problem}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{tcolorbox}
+\usepackage{caption}
+\usepackage{xcolor}
+\usepackage{tikz}
+\tcbuselibrary{skins}
+\tcbuselibrary{breakable}
+
+\newtcolorbox{bx}[1]{skin=bicolor,breakable,leftrule=1mm,toprule=0mm,bottomrule=0mm,rightrule=0mm,colbacklower=red!15,colback=gray!15,sharp corners,colframe=red}
+
+\begin{document}
+\centering	\section*{Homework 7 Solution}
+
+\begin{bx}
+	
+	\begin{ex}
+	Describe a randomized algorithm which, for a given graph $G=(V,E)$, finds a partition $V = V_1 \cup V_2$ that satisfies
+	\[
+	\left | E(V_1,V_2)\right | \ge \frac{1}{2}.\max\left | E(U_1,U_2)\right | 
+	\]
+	where the maximum is over all partitions $V = U_1 \cup U_2$.
+	\end{ex}
+	\tcblower
+Assume we have a classifier $C:V \rightarrow \{-1,1\}$ where for each $v\in V$, $C(v)$ is a symmetric Bernoulli random variable independent of other nodes. Consider the random variable $1_{C(u)C(v)=-1}$ for each $u,v \in V$.
+The size of the cut given by our algorithm would be 
+\[
+\frac{1}{2}\sum_{(u,v)\in E}1_{C(u)C(v)=-1}
+\]
+for which the expected value is $\frac{2|E|}{4}=\frac{|E|}{2}$.
+
+Since the expected value is $\frac{|E|}{2}$, our algorithm can find a cut of size at least $\frac{|E|}{2}$.
+
+Note that the size of a cut cannot exceed $|E|$, which implies that 
+\[
+\left | E(V_1,V_2)\right | \ge \frac{1}{2}.\max\left | E(U_1,U_2)\right | 
+\]
+for all partitions $V=U_1 \cup U_2$.
+\qed
+\end{bx}
+
+\begin{bx}
+	
+	\begin{ex}
+	Let $K(x,y)$ and, $M(x,y)$ be kernels. Show that all of the following are kernels, too:
+		\begin{enumerate}[label=(\alph*)]
+		\item $aK(x,y)+bM(x,y)$, where $a,b>0$ are constants.
+		\item $K(x,y)^p$ where $p \in \mathbb{N}$
+		\item $P(K(x,y))$ where $P$ is a polynomial with nonnegative coefficients.
+		\item $K(x,y)f(x)f(y)$, where $f:\mathbb{R}^d \rightarrow \mathbb{R}$ is a function.
+		\end{enumerate}
+	\end{ex}
+	\tcblower
+	\begin{enumerate}[label=(\alph*)]
+	\item We know that the matrices related to $K$ and $M$ are symmetric positive semidefinite, which makes the matrices of $aK$ and $bM$ symmetric positive semidefinite since $a$ and $b$ are positive.
+	Finally, the sum of two symmetric positive semidefinite matrices is a symmetric positive semidefinite matrix.
+	\item If the matrix of $K$ is symmetric positive semidefinite, then $K^p$ is also symmetric positive semidefinite for $p\in \mathbb{N}$
+	\item The polynomial can be written as a sum of $aK^r$ for some $r\in \mathbb{N}$ and $a>0$, which is symmetric and positive semidefinite as a result of part (b), and their sum is also symmetric and positive semidefinite as a result of part (a).
+	\item  Let $K^\prime(x,y)=f(x)f(y)$. It is easy to check that $K^\prime$ is a PD kernel, and we also know that the multiplication of two PD kernels is a PD kernel.
+	\end{enumerate}
+	\qed
+\end{bx}
+
+
+\begin{bx}
+	
+	\begin{ex}
+	Let $u,v$ be unit vectors in $\mathbb{R}^d$, and $g$ be a standard normal random vector in $\mathbb{R}^d$,
+	i.e. $g\sim N(0,I_d)$. Prove the following identities.
+	\begin{enumerate}[label=(\alph*)]
+		\item $\mathbb{E}\langle u,g\rangle\langle v,g\rangle=\langle u,v \rangle$
+		\item $\mathbb{E}\langle u,g\rangle\mathrm{sign}(\langle v,g\rangle)=\sqrt{\frac{2}{\pi}}\langle u,v\rangle$
+		\item Consider the random variable $X_u = \langle u ,g\rangle - \sqrt{\frac{\pi}{2}}\mathrm{sign}(\langle u,g\rangle)$ and similarly for $X_v$. Deduce from (a) and (b) that
+		\begin{align}\label{eq:1}
+		\frac{\pi}{2}\mathbb{E} \mathrm{sign}(\langle u,g\rangle)\mathrm{sign}(\langle v,g\rangle) = \langle u,v\rangle + \mathbb{E}[X_uX_v]
+		\end{align}
+	\end{enumerate}
+	\end{ex}
+	\tcblower
+	\begin{enumerate}[label=(\alph*)]
+		\item$ 
+		\mathbb{E}\langle u,g\rangle\langle v,g\rangle=\sum_{i,j=1}^{n}u_iv_j\mathbb{E}[g_ig_j]=\sum_{i=1}^{n}u_iv_i=\langle u,v\rangle$
+		
+		\item  Using rotation invariance, let $u=v=(1,0,\dots,0)$,
+		then:
+		\[
+		\mathbb{E}\langle u,g\rangle\mathrm{sign}(\langle v,g\rangle)=\mathbb{E}g_1\mathrm{sign}(g_1)=\sqrt{\frac{2}{\pi}}\int_{0}^{\infty}xe^{-\frac{x^2}{2}}\mathrm{d}x=\sqrt{\frac{2}{\pi}}
+		\]
+		Further,$\langle u,v\rangle=1$, so:
+		\[
+		\mathbb{E}\langle u,g\rangle\mathrm{sign}(\langle v,g\rangle) = \sqrt{\frac{2}{\pi}}\langle u,v\rangle
+		\]
+		\item This simply results from expanding $\mathbb{E}X_uX_v$, using the linearity of expected value and replacing with the relations derived in part (a) and (b).
+		
+	\end{enumerate}
+	\qed
+\end{bx}
+
+\begin{bx}
+	
+	\begin{ex}
+	Let $A=[a_{ij}]_{i,j=1}^n$ be a symmetric, positive semi-definite matrix, and let $u_1,\dots,u_n$
+	be unit vectors in $\mathbb{R}^d$. Perform the randomized rounding of the vectors $u_i$, i.e. let $x_i=\mathrm{sign}(\langle g,u_i\rangle)$, where $g\sim \mathcal{N}(0,I_d)$. Using identity (\ref{eq:1}), show that:
+	\[
+	\mathbb{E}\left [ \frac{\pi}{2}\sum_{i,j=1}^{n}a_{ij}x_ix_j\right ] \ge \sum_{i,j=1}^{n}a_{ij}\langle u_i,u_j\rangle
+	\]
+
+	\end{ex}
+	\tcblower
+	\[
+	\mathbb{E}\left [ \frac{\pi}{2}\sum_{i,j=1}^{n}a_{ij}x_ix_j\right ] = \sum_{i,j=1}^{n}a_{ij}\frac{\pi}{2}\mathbb{E}[x_ix_j] =
+	\sum_{i,j=1}^{n}a_{ij}\langle u_i,u_j\rangle + \sum_{i,j=1}^{n}a_{ij}\mathbb{E}[X_{u_i}X_{u_j}]
+	\]
+	Note that the right summand in the last equality is non-negative due to $A$ being positive semi-definite:
+	\[
+	\sum_{i,j=1}^{n}a_{ij}\mathbb{E}[X_{u_i}X_{u_j}] = \mathbb{E}X^\top A X \ge 0
+	\]
+	where $X=[X_{u_1},\dots,X_{u_n}]^\top$.
+	
+	This implies the inequality given in the question.
+	\qed
+\end{bx}
+
+
+
+\end{document}
