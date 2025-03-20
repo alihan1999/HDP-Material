@@ -1,0 +1,161 @@
+\documentclass[12pt]{article}
+\usepackage[english]{babel}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\title{HDP Notes and Exercise Soultions}
+\author{Holden Caulfield}
+\newtheorem{theorem}{Theorem}
+\newtheorem{remark}{Remark}[theorem]
+\newtheorem{ex}{Problem}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{tcolorbox}
+\usepackage{caption}
+\usepackage{xcolor}
+\usepackage{tikz}
+\tcbuselibrary{skins}
+\tcbuselibrary{breakable}
+
+\newtcolorbox{bx}[1]{skin=bicolor,breakable,leftrule=1mm,toprule=0mm,bottomrule=0mm,rightrule=0mm,colbacklower=red!15,colback=gray!15,sharp corners,colframe=red}
+
+\begin{document}
+	\centering	\section*{Homework 8 Solution}
+	
+	\begin{bx}
+		
+		\begin{ex}
+		\;
+			\begin{enumerate}[label=(\alph*)] 
+				
+			\item Compute the operator and Frobenius norms of the identity matrix.
+			\item Compute the operator and Frobenius norms of the matrix whose all entries = 1.
+				
+			\end{enumerate}
+		\end{ex}
+		\tcblower
+		\begin{enumerate}[label=(\alph*)]
+		\item $\|I\|_F=n$,$\|I\|=1$
+		\item $\|A\|_F=n^2$,$\|A\|=n$
+		 \end{enumerate}
+		\end{bx}
+	
+	
+		\begin{bx}
+		
+		\begin{ex}
+				Let A be an $n\times n$ symmetric matrix.
+			\begin{enumerate}[label=(\alph*)]
+				\item Show that
+				\[
+				\|A\|=\max\limits_{i=1,\dots,n}|\lambda_i(A)|
+				\]
+				where $\lambda_i(A)$ denote the eigenvalues of A.
+				
+				\item Show that
+				$\|A\|=\max\limits_{x\in S^{n-1}}|x^\top Ax|$
+				
+				\item Show by example that the formula in (b) may fail for non-symmetric matrices.
+			\end{enumerate}
+		\end{ex}
+		\tcblower
+	\begin{enumerate}[label=(\alph*)]
+		\item We can write the spectral decomposition of $A$ since $A$ is self-adjoint:
+		\[
+		A=\sum_{i=1}^{n}\lambda_iu_iu_i^\top
+		\]
+		\[
+		AA^\top=\sum_{i=1}^{n}\lambda_i^2u_iu_i^\top
+		\]
+		which implies that
+		$\sigma_i=|\lambda_i|$, so:
+		\[
+		\| A \| = \max\limits_{i=1,\dots,n}|\lambda_i(A)|
+		\]
+		
+		\item We can rewrite the objective as $\langle x,Ax\rangle$. Knowing that $A$ is symmetric, we have a orthonormal basis of eigenvectors of $A$ due to the real spectral theorem. We can then write $x=\sum_{i=1}^{n}\langle x,u_i\rangle u_i$
+		where $u_i$'s form the aforementioned basis.
+		Thus, we can write the objective as:
+		\begin{align*}
+	|	\langle A\sum_{i=1}^{n}\langle x,u_i\rangle u_i,\sum_{i=1}^{n}\langle x,u_i\rangle u_i\rangle| &= 
+	|	\langle \sum_{i=1}^{n}\lambda_i\langle x,u_i\rangle u_i,\sum_{i=1}^{n}\langle x,u_i\rangle u_i\rangle |\\&=|\sum_{i=1}^{n}\langle x,u_i \rangle^2\lambda_i| \\
+	&\le |\lambda_{max}||\sum_{i=1}^{n}\langle x,u_i\rangle^2| \\
+	&= |\lambda_{max}|
+		\end{align*}
+So we have:
+\[
+\max\limits_{x\in S^{n-1}}x^\top Ax=\max\limits_{i=1,\dots,n}|\lambda_i(A)|=\|A\|
+\]
+where the second equality is the result of part (a).
+
+\item Consider the matrix:
+$$
+A =
+\begin{bmatrix}
+	0 & 8 \\
+	2 & 0
+\end{bmatrix}
+$$
+we have:
+\[
+AA^\top = \begin{bmatrix}
+	64 & 0 \\
+	0 & 4
+\end{bmatrix}
+\]
+so $\|A\|=8$.
+
+Now consider a unit vector $u=[u_1,u_2]^\top$, then $u^\top A u=10u_1u_2$, we know that $u_1^2+u_2^2=1$, so $u_1u_2\le\frac{1}{2}$ (this is easy to check using  Lagrangian dual), which implies that the relation given in part (b) would give us $5$ as the answer, which is not equal to $\|A\|=8$.
+	\end{enumerate}
+\qed
+	\end{bx}
+	
+		\begin{bx}
+		
+		\begin{ex}
+			Let $X_1,X_2$ be independent $N(0,1)$ random
+			variables. Show that $Y_1=(X_1+X_2)/\sqrt{2}$ and $Y_2=(X_1-X_2)/\sqrt{2}$ are independent $N(0,1)$ random variables.
+		\end{ex}
+
+		\tcblower
+	Let $X=(X_1,X_2)\sim \mathcal{N}(0,I)$ and $Y=(Y_1,Y_2)$, then $Y=AX$, where:
+	\[
+	A =
+	\begin{bmatrix}
+		\frac{1}{\sqrt{2}} & 	\frac{1}{\sqrt{2}} \\
+			\frac{1}{\sqrt{2}} & 	-\frac{1}{\sqrt{2}}
+	\end{bmatrix}
+	\]	
+	we know that $Cov(Y)=AA^\top=I$, which implies that $Y_1$ and $Y_2$ are jointly normal independent random variables with variance 1.
+	
+	It is also easy to check that $Y_1$ and $Y_2$ have mean 0 using the linearity of expected value. 
+	
+	Note that 0 covariance does not imply independence in general, but it does in the case where the variables are jointly normal, which holds in our case.
+	\end{bx}
+
+	
+\begin{bx}
+	
+	\begin{ex}
+	Let $A$ be an $n \times n$ symmetric matrix, $\varepsilon \in (0,1/2)$, and N be an $\varepsilon$-net of the unit sphere	$S^{n-1}$. Show that
+	\[
+	\|A\|\le\frac{1}{1-2\varepsilon}\cdot\max\limits_{x\in\mathcal{N}}|x^\top Ax|
+	\]
+	\end{ex}
+	\tcblower
+	Assume that $\|A\|=x^\top A x$ for some $x \in S^{n-1}$. There exists some $y\in\mathcal{N}$ s.t. $\|x-y\|_2\le \varepsilon$. We have:
+	\begin{align*}
+		|x^\top Ax|-|y^\top Ay| &\le |x^\top Ax-y^\top Ay|\\
+		&= |x^\top Ax - x^\top Ay + x^\top Ay-y^\top Ay| \\
+		&\le  |x^\top Ax - x^\top Ay| + |x^\top Ay-y^\top Ay| \\
+		&= |\langle x, A(x-y)\rangle| +  |\langle x-y,Ay\rangle| \\
+		&\le 2\|A\|\varepsilon \\
+		&\Rightarrow \|A\|-2\varepsilon\|A\| \le |y^\top A y| \\
+		&\Rightarrow \|A\| \le \frac{1}{1-2\varepsilon}\cdot\max\limits_{x\in \mathcal{N}}|x^\top A x|
+	\end{align*}
+
+\end{bx}
+
+
+\end{document}
